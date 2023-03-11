@@ -7,6 +7,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.5.0)
+    faraday (2.7.2)
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
     rake (12.3.3)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
@@ -21,14 +25,19 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.0)
+    ruby2_keywords (0.0.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   dmarket_api!
+  faraday (= 2.7.2)
   rake (~> 12.0)
   rspec (~> 3.0)
 
+RUBY VERSION
+   ruby 3.0.3p157
+
 BUNDLED WITH
-   2.1.4
+   2.2.32
