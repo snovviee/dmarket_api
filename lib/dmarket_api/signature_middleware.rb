@@ -1,5 +1,5 @@
-require 'openssl'
 require 'faraday'
+require 'ed25519'
 
 module DmarketApi
   class SignatureMiddleware < ::Faraday::Middleware
@@ -12,19 +12,28 @@ module DmarketApi
     end
 
     def on_request(env)
-      if env.url.query
-        signature = signature(env.url.query)
-        env.url.query += "&signature=#{signature}"
-      elsif env.request_body
-        signature = signature(env.request_body)
-        env.request_body += "&signature=#{signature}"
-      end
+      env.request_headers['X-Request-Sign'] = signature(env)
     end
 
     private
 
-    def signature(data)
-      OpenSSL::HMAC.hexdigest("SHA256", secret_key, data)
+    def signature(env)
+      body = env.request_body ? env.request_body : ''
+      unsigned_string = env.method.to_s.upcase + env.url.request_uri + body
+
+      signed_string = signing_key.sign(unsigned_string + timestamp)
+      signature = signed_string.bytes.pack("c*").unpack("H*").first
+      "dmar ed25519 " + signature
+    end
+
+    def signing_key
+      str_32_bytes = secret_key.scan(/../).map { |x| x.hex.chr }.join
+
+      Ed25519::SigningKey.new(str_32_bytes)
+    end
+
+    def timestamp
+      Time.now.to_i.to_s
     end
   end
 end

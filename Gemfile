@@ -7,4 +7,4 @@ gemspec
 
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
-gem 'faraday', '2.7.2'
+gem 'ed25519', "~> 1.3.0"

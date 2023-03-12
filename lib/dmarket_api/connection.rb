@@ -1,4 +1,5 @@
 require_relative 'signature_middleware'
+require 'byebug'
 
 module DmarketApi
   class Connection
@@ -9,30 +10,27 @@ module DmarketApi
 
     HOST = 'https://api.dmarket.com'
 
-    def create
-      Faraday.new(
-        url: HOST,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Api-Key': api_key
-        }
-      ) do |f|
-        f.request :url_encoded
-        f.request :dmarket_signature, secret_key
-        f.response :json, parser_options: { symbolize_names: true }
+    class << self
+      def create(api_key:, secret_key:)
+        Faraday.new(
+          url: HOST,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Api-Key': api_key,
+            'X-Sign-Date': timestamp
+          }
+        ) do |f|
+          f.request :url_encoded
+          f.request :dmarket_signature, secret_key.gsub(api_key, '')
+          f.response :json, parser_options: { symbolize_names: true }
+        end
       end
-    end
 
-    private
+      private
 
-    def timestamp
-      DateTime.now.strftime('%Q').to_i
-    end
-
-    module Methods
-      def connection
-        @connection ||= Connection.create
+      def timestamp
+        Time.now.to_i.to_s
       end
     end
   end
