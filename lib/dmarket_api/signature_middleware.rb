@@ -13,6 +13,7 @@ module DmarketApi
 
     def on_request(env)
       env.request_headers['X-Request-Sign'] = signature(env)
+      env.request_headers['X-Sign-Date'] = timestamp
     end
 
     private

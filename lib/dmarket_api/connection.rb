@@ -17,20 +17,13 @@ module DmarketApi
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'X-Api-Key': api_key,
-            'X-Sign-Date': timestamp
+            'X-Api-Key': api_key
           }
         ) do |f|
           f.request :url_encoded
           f.request :dmarket_signature, secret_key.gsub(api_key, '')
           f.response :json, parser_options: { symbolize_names: true }
         end
-      end
-
-      private
-
-      def timestamp
-        Time.now.to_i.to_s
       end
     end
   end
