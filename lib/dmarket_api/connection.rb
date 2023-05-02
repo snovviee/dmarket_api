@@ -22,6 +22,7 @@ module DmarketApi
         ) do |f|
           f.request :url_encoded
           f.request :dmarket_signature, secret_key.gsub(api_key, '')
+          f.response :logger, ::Logger.new(STDOUT), bodies: false, headers: false
           f.response :json, parser_options: { symbolize_names: true }
         end
       end
