@@ -32,5 +32,15 @@ module DmarketApi
     def connection
       @connection ||= Connection.create(api_key: api_key, secret_key: secret_key)
     end
+
+    def history(params = {})
+      response = connection.get("/marketplace-api/v1/sales-history", params)
+      response.body if response.success?
+    end
+
+    def last_sales(params = {})
+      response = connection.get("/marketplace-api/v1/last-sales", params)
+      response.body if response.success?
+    end
   end
 end
