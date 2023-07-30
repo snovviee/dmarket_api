@@ -46,10 +46,16 @@ module DmarketApi
     end
 
     def history(params = {})
+      api.dmarket.com/trade-aggregator/v1/avg-sales-graph?
       response = connection.get("/marketplace-api/v1/sales-history", params)
       response.body if response.success?
     end
-
+    
+    def trade_aggregator(params = {})
+      response = connection.get("/trade-aggregator/v1/avg-sales-graph", params)
+      response.body if response.success?
+    end
+    
     def last_sales(params = {})
       response = connection.get("/marketplace-api/v1/last-sales", params)
       response.body if response.success?
