@@ -44,12 +44,6 @@ module DmarketApi
     def connection
       @connection ||= Connection.create(api_key: api_key, secret_key: secret_key)
     end
-
-    def history(params = {})
-      api.dmarket.com/trade-aggregator/v1/avg-sales-graph?
-      response = connection.get("/marketplace-api/v1/sales-history", params)
-      response.body if response.success?
-    end
     
     def trade_aggregator(params = {})
       response = connection.get("/trade-aggregator/v1/avg-sales-graph", params)
